@@ -35,14 +35,16 @@ npm start
 Invoke-RestMethod -Method Patch -Uri 'http://localhost:3000/api/orders/1001/status' -ContentType 'application/json; charset=utf-8' -Body '{"status":"완료"}'
 ```
 
-| 사례 | 요청 | HTTP | 결과 | 변경 건수 |
+아래 표의 **바뀐 주문 수**는 테스트 횟수가 아니라 한 번의 요청으로 상태가 실제로 바뀐 주문의 수입니다. 1001은 상품이 두 줄이어도 주문은 한 건입니다.
+
+| 사례 | 요청 | HTTP | 결과 | 바뀐 주문 수 |
 |---|---|---:|---|---:|
 | 대기인 1001 완료 | `PATCH /api/orders/1001/status`, `{"status":"완료"}` | 200 | `{"orderNo":1001,"status":"완료","changedRows":1}` | 1 |
 | 완료된 1001 재요청 | 같은 요청 | 200 | `{"orderNo":1001,"status":"완료","changedRows":0}` | 0 |
 | 없는 주문 | `PATCH /api/orders/9999/status`, `{"status":"완료"}` | 404 | `{"error":"주문을 찾을 수 없습니다"}` | 0 |
 | 허용하지 않는 상태 | `PATCH /api/orders/1002/status`, `{"status":"취소"}` | 400 | `{"error":"허용하지 않는 상태값입니다"}` | 0 |
 
-잘못된 JSON 또는 누락된 `status`는 400 오류를 반환합니다. 오류 요청은 데이터를 변경하지 않습니다. 1001의 상태를 바꿔도 상품 두 줄, 금액, 1002 상태는 유지됩니다.
+잘못된 JSON 또는 누락된 `status`는 400 오류를 반환합니다. 오류 요청은 데이터를 변경하지 않습니다. 오류 응답에는 `changedRows`가 없으며 표의 0은 데이터 변경이 없었다는 뜻입니다. 1001의 상태를 바꿔도 상품 두 줄, 금액, 1002 상태는 유지됩니다.
 
 ## 결과 확인 방법
 
