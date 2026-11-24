@@ -1,0 +1,12 @@
+{
+  "name": "order-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ASP 주문 목록 기능을 Node.js로 변환한 사전과제",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
